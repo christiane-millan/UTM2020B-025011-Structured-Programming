@@ -16,6 +16,9 @@ int main(){
     calorias = (int *) malloc (tamanno * sizeof(int));
 
     if(calorias != NULL){
+        printf("(Antes) El promedio de calorias consumidas en %d días fue de: %.2f\n"
+            , tamanno
+            , promedio_calorias(calorias, tamanno));
         leer_calorias(calorias, tamanno);
         printf("El promedio de calorias consumidas en %d días fue de: %.2f\n"
             , tamanno

@@ -16,23 +16,33 @@
 const int MIN = 100;
 char mensaje[100] = "Mensaje";
 
+int posicion_nuevo_estudiante = 0;
 
 //int matriculas[MAX_ALUMNOS] = {123, 345, 567};
-int *matriculas;
-char nombres[MAX_ALUMNOS][MAX_NOM] = {"JuAn CaRlOs", "Karla", "Alberto"};
-float calificaciones[MAX_ALUMNOS][MAX_CALIFICACIONES] = {{0.0 , 0.0, 0.0, 0.0}, {0.0 , 0.0, 0.0, 0.0}, {0.0 , 0.0, 0.0, 0.0}};
-int asistencias[MAX_ALUMNOS][MAX_ASISTENCIA];
+//int *matriculas;
+//char nombres[MAX_ALUMNOS][MAX_NOM] = {"JuAn CaRlOs", "Karla", "Alberto"};
+//float calificaciones[MAX_ALUMNOS][MAX_CALIFICACIONES] = {{0.0 , 0.0, 0.0, 0.0}, {0.0 , 0.0, 0.0, 0.0}, {0.0 , 0.0, 0.0, 0.0}};
+//int asistencias[MAX_ALUMNOS][MAX_ASISTENCIA];
 
-//manejo de memoria dinámica
-void inicializa_matriculas(int *matriculas){
-    matriculas = (int *) malloc (3 * sizeof(int));
+struct estudiante {
+    int matricula;
+    char nombre[MAX_ALUMNO];
+    float calificaciones[MAX_CALIFICACIONES];
+    int asistencias[MAX_ASISTENCIA];
+} lista_estudiante[MAX_ALUMNOS];
 
-    if (matriculas != NULL){
-        *(matriculas + 0) = 123;
-        *(matriculas + 1) = 345;
-        *(matriculas + 2) = 567;
-    }
-}
+typedef struct estudiante mi_estudiante;
+
+// //manejo de memoria dinámica
+// void inicializa_matriculas(int *matriculas){
+//     matriculas = (int *) malloc (3 * sizeof(int));
+
+//     if (matriculas != NULL){
+//         *(matriculas + 0) = 123;
+//         *(matriculas + 1) = 345;
+//         *(matriculas + 2) = 567;
+//     }
+// }
 
 //prototipo de una función por valor
 float promedio(float *cal);
@@ -42,7 +52,7 @@ void menu_principal();
 //prototipo de una función por referencia
 void menu_modicar_calificacion(float* c1, float* c2, float* c3, float* cf);
 void menu_modicar_calificacion2(float calificaciones[][MAX_CALIFICACIONES]);
-void agregar_alumno();
+mi_estudiante agregar_alumno();
 int posicion_alumno_imprimir();
 void imprimir_alumno(const int posicion);
 void modificar_alumno();
@@ -58,15 +68,15 @@ int busqueda_secuencial(int matricula);
 void convertir_mayusculas(char *p_cadena);
 void imprimir_mensaje(const char *p_mensaje);
 
-void inicializar_asistencia(){
-    for (int filas = 0; filas < MAX_ALUMNOS; filas++){
-        for(int columnas = 0; columnas < MAX_ASISTENCIA; columnas++){
-            asistencias[filas][columnas] = -1;
-        }
-    }
+// void inicializar_asistencia(){
+//     for (int filas = 0; filas < MAX_ALUMNOS; filas++){
+//         for(int columnas = 0; columnas < MAX_ASISTENCIA; columnas++){
+//             asistencias[filas][columnas] = -1;
+//         }
+//     }
     
     
-}
+// }
 
 void pase_lista(){
     int posicion;
@@ -233,27 +243,26 @@ void menu_modicar_calificacion2(float calificaciones[][MAX_CALIFICACIONES]){
 }
 
 
-void agregar_alumno(){
-    int posicion;
+mi_estudiante agregar_alumno(){
+
+    mi_estudiante estudiante_nuevo;
+
+    //int posicion;
     system("clear");
     printf("------------------------------------------------------\n");
     printf("\t\t\t... Nuevo alumno.\n");
     printf("------------------------------------------------------\n");
-    printf("La posicion donde deseas almacenar al alumno [1 - %d]:", MAX_ALUMNOS);
-    scanf("%d", &posicion);
-    posicion--;
     printf("Ingresar matricula: ");
-    scanf("%d", &matriculas[posicion]);
+    scanf("%d", &estudiante_nuevo.matricula);
     printf("Ingresar nombre: ");
-    //scanf("%s", nombres[posicion - 1]);
     fflush(stdin);
-    fgets(nombres[posicion], MAX_NOM, stdin);
+    fgets(estudiante_nuevo.nombre, MAX_NOM, stdin);
     puts("Datos almacenado correctamente...");
-    puts("Ejemplo de putchar():");
-    putchar('X');
     puts("Presiona cualquier tecla para continuar...");
     fflush(stdin);
     getchar();
+
+    return estudiante_nuevo;
 }
 
 void imprimir_calificaciones(const int posicion){
@@ -358,8 +367,8 @@ void modificar_alumno(){
 
 int main() {
     srand(time(0));
-    inicializar_asistencia();
-    inicializa_matriculas(matriculas);
+    //inicializar_asistencia();
+    //inicializa_matriculas(matriculas);
 
     int opt = 0;
     while( opt != 7) {
@@ -368,7 +377,7 @@ int main() {
         scanf("%d", &opt); 
         int index;
         switch (opt) {
-        case 1: agregar_alumno();
+        case 1: lista_estudiantes[posicion_nuevo_estudiante] = agregar_alumno();
             break;
         case 2: modificar_alumno();
             break;
